@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven3'
+        jdk 'JDK21'
+    }
+
+    stages {
+
+       stage('SCM GitHub') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/erengk/devops-02-pipeline']])
+            }
+        }
+
+        stage('Build Maven') {
+            steps {
+                sh 'mvn clean install'
+            //    bat 'mvn clean install'
+            }
+        }
+
+        stage('Test Maven') {
+            steps {
+                sh 'mvn test'
+            //    bat 'mvn test'
+            }
+        }
+
+        stage('Docker Image') {
+            steps {
+                sh 'docker build  -t gokhaneren/devops-application:latest   .'
+            //    bat 'docker build  -t gokhaneren/devops-application:latest   .'
+            }
+        }
+        stage('Docker Image to DockerHub') {
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
+                        if(isUnix()){
+                            sh 'docker login -u erengk   -p %dockerhub%'
+                            sh 'docker push  gokhaneren/devops-application:latest'
+                        }else{
+                            bat 'docker login -u erengk -p %dockerhub%'
+                            bat 'docker push gokhaneren/devops-application:latest'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
