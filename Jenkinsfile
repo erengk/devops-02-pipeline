@@ -52,7 +52,7 @@ pipeline {
          stage('Deploy Kubernetes') {
                     steps {
                     script {
-                            kubernetesDeploy (configs: 'deployment-service.yaml', kubeconfigId: 'kubernetes2')
+                            kubernetesDeploy (configs: 'deployment-service.yaml', kubeconfigId: 'kubernetes3')
                         }
                     }
                 }
@@ -72,3 +72,13 @@ pipeline {
             }
 
         }
+
+        kubernetesDeploy configs: '/Users/erengk/.kube/config',
+        kubeConfig: [path: ''],
+        kubeconfigId: 'kubernetes',
+        secretName: '',
+        ssh: [sshCredentialsId: '*', sshServer: ''],
+        textCredentials: [certificateAuthorityData: '',
+        clientCertificateData: '',
+        clientKeyData: '',
+        serverUrl: 'https://']
