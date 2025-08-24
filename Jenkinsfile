@@ -72,13 +72,3 @@ pipeline {
             }
 
         }
-
-        kubernetesDeploy configs: '/Users/erengk/.kube/config',
-        kubeConfig: [path: ''],
-        kubeconfigId: 'kubernetes',
-        secretName: '',
-        ssh: [sshCredentialsId: '*', sshServer: ''],
-        textCredentials: [certificateAuthorityData: '',
-        clientCertificateData: '',
-        clientKeyData: '',
-        serverUrl: 'https://']
