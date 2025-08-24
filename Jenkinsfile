@@ -49,5 +49,26 @@ pipeline {
                 }
             }
         }
-    }
-}
+         stage('Deploy Kubernetes') {
+                    steps {
+                    script {
+                            kubernetesDeploy (configs: 'deployment-service.yaml', kubeconfigId: 'kubernetes')
+                        }
+                    }
+                }
+
+
+                stage('Docker Image to Clean') {
+                    steps {
+
+                           //  sh 'docker image prune -f'
+                             bat 'docker image prune -f'
+
+                    }
+                }
+
+
+
+            }
+
+        }
