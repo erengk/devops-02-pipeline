@@ -39,8 +39,8 @@ pipeline {
                 script{
                     withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
                         if(isUnix()){
-                            sh 'docker login -u erengk   -p %dockerhub%'
-                            sh 'docker push  gokhaneren/devops-application:latest'
+                            sh 'echo docker login -u erengk   -p %dockerhub%'
+                            sh 'echo docker push  gokhaneren/devops-application:latest'
                         }else{
                             bat 'docker login -u erengk -p %dockerhub%'
                             bat 'docker push gokhaneren/devops-application:latest'
